@@ -10,6 +10,8 @@ public class TestIntList{
       
       // Check out of bounds on remove
       assert !list.remove(0): "Remove does not work correctly";
+      assert !list.remove(-1): "Remove is not working correctly";
+      assert !list.remove(100): "Remove is not working correctly";
       
       // Check out of bounds on getPos
       assert list.getPos(0) == -1: "getPos is not working correctly when out of bounds";
@@ -26,6 +28,7 @@ public class TestIntList{
          assert list.insertBefore(i, i): "Inserting at position " + i + " is not working correctly";
          assert list.getPos(i) == i: "Insert at position " + i + " is not working correctly";
       }
+      
       
       // Check for correct outputs from insertBefore
       assert list.getPos(0) == 0: "Inserting is not working correctly";
@@ -46,15 +49,11 @@ public class TestIntList{
       assert list.getPos(-1) == -1 : "getPos is not working correctly when out of bounds";
       assert list.getPos(10) == -1: "getPos is not working correctly when out of bounds";
       
-      // Check boundaries on remove
-      assert !list.remove(-1): "Remove is not working correctly";
-      assert !list.remove(10): "Remove is not working correctly";
-      
       
       // Check Values on Insert Before
+      int checkPos = list.getPos(3);
       assert list.insertBefore(3,3);
-      assert list.insertBefore(3,3);      
       assert list.getPos(3) == 3: "Insert Before is not working correctly";
-      assert list.getPos(4) == 3: "Insert Before is not working correctly";
+      assert list.getPos(4) == checkPos: "Insert Before is not working correctly";
    }
 }
