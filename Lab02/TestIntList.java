@@ -55,5 +55,35 @@ public class TestIntList{
       assert list.insertBefore(3,3);
       assert list.getPos(3) == 3: "Insert Before is not working correctly";
       assert list.getPos(4) == checkPos: "Insert Before is not working correctly";
+      
+      /* Start New */
+      // Init New intList
+      /*IntList list2 = new IntList(5);
+      
+      // Insert at Start, Middle, and End
+      assert list2.insertBefore(5, 0): "1";
+      assert list2.insertBefore(10, 2): "2";
+      assert list2.insertBefore(15, 4): "3";
+      
+      // Delete from end, start, middle
+      assert list2.remove(4): "4";
+      assert list2.remove(0): "5";
+      assert list2.remove(2): "6";
+      
+      // Insert Until Full
+      assert list2.insertBefore(5, 0): "7";
+      assert list2.insertBefore(10, 2): "8";
+      assert list2.insertBefore(15, 4): "9";
+      assert list2.insertBefore(7, 1): "10";
+      assert list2.insertBefore(12, 3): "11";
+      
+      // Delete and Check Size
+      for(int i = 0; i < 5; i++){
+         assert list2.remove(i): "12";
+      }
+      
+      // Check size and index at 0
+      assert list2.length() == 0: "13";
+      assert list2.getPos(0) == -1: "14";*/
    }
 }
