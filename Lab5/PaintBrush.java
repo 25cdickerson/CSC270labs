@@ -68,15 +68,15 @@ set the "paint" for the paintbrush
          // Get the previous color for base cases
          Paint prevColor = mesh[x][y];
          
-         fill(x, y, mesh, prevColor);
+         if(!prevColor.equals(paint)){
+            fill(x, y, mesh, prevColor);
+         }
       }
       // Check for Pattern1
       else if(mode == 3){
-      
-      }
-      // Check for Pattern2
-      else{
-      
+         Paint prevColor = mesh[x][y];
+         
+         fill2(x, y, mesh, prevColor);
       }
 	}
 	
@@ -97,6 +97,53 @@ set the "paint" for the paintbrush
          fill(x-1, y, mesh, prevColor);
          fill(x, y+1, mesh, prevColor);
          fill(x, y-1, mesh, prevColor);
+   }
+   
+   private void fill2(int x, int y, Paint[][] mesh, Paint prevColor){
+         // Base cases
+         // Check bounds of x and y
+         if(x < 0 || x >= mesh.length || y < 0 || y >= mesh[x].length){
+            return;
+         }
+         
+         // Check if the not the prevColor
+         if(!mesh[x][y].equals(prevColor)){
+            return;
+         }
+         
+         if(paint.equals(prevColor)){
+            return;
+         }
+         
+         
+         // Making sure there is no endless loop by checking if
+         // Area is white
+         if(prevColor.equals(new PaintColor(Color.WHITE))){
+            // Check if mod 2 = 0, if so set to gold, if not set to white
+            if(x % 2 == 0){
+               mesh[x][y] = Gold;
+               fill2(x+1, y, mesh, prevColor);
+               fill2(x-1, y, mesh, prevColor);
+               fill2(x, y+1, mesh, prevColor);
+               fill2(x, y-1, mesh, prevColor);
+            }
+            else{
+               fill2(x+1, y, mesh, prevColor);
+               fill2(x-1, y, mesh, prevColor);
+            }
+        }
+        else{
+            if(x % 2 == 0){
+               mesh[x][y] = Gold;
+            }
+            else{
+               mesh[x][y] = White;
+            }
+            fill2(x+1, y, mesh, prevColor);
+            fill2(x-1, y, mesh, prevColor);
+            fill2(x, y+1, mesh, prevColor);
+            fill2(x, y-1, mesh, prevColor);
+        }
    }
 	
 /*
