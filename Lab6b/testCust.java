@@ -43,18 +43,85 @@ public class testCust{
       assert pq2.isEmpty();
       assert pq3.isEmpty();
       
+      // Check push is working correctly with one push
       pq1.push(c1);
       assert !pq1.isEmpty();
+      assert pq1.pop().equals(c1);
+      assert pq1.isEmpty();
       
-      pq2.push(c1);
-      assert !pq2.isEmpty();
+      // Push things to compare
+      //pq1
       
-      pq3.push(c1);
-      assert !pq3.isEmpty();
+      pq1.push(c1);
+      pq1.push(c2);
+      
+      assert !pq1.isEmpty();
       
       assert pq1.pop().equals(c1);
-      assert pq2.pop().equals(c1);
-      assert pq3.pop().equals(c1);
+      assert pq1.pop().equals(c2);
       
+      assert pq1.isEmpty();
+      
+      pq1.push(c1);
+      pq1.push(c3);
+      
+      assert !pq1.isEmpty();
+      
+      assert pq1.pop().equals(c1);
+      assert pq1.pop().equals(c3);
+      
+      assert pq1.isEmpty();
+      
+      // pq2
+      pq2.push(c1);
+      pq2.push(c2);
+      
+      assert !pq2.isEmpty();
+      
+      assert pq2.pop().equals(c2);
+      assert pq2.pop().equals(c1);
+      
+      assert pq2.isEmpty();
+      
+      pq2.push(c1);
+      pq2.push(c3);
+      
+      assert !pq2.isEmpty();
+      
+      assert pq2.pop().equals(c1);
+      assert pq2.pop().equals(c3);
+      
+      assert pq2.isEmpty();
+      
+      // pq3
+      pq3.push(c1);
+      pq3.push(c2);
+      
+      assert !pq3.isEmpty();
+      
+      assert pq3.pop().equals(c1);
+      assert pq3.pop().equals(c2);
+      
+      assert pq3.isEmpty();
+      
+      pq3.push(c1);
+      pq3.push(c4);
+      
+      assert !pq3.isEmpty();
+      
+      assert pq3.pop().equals(c1);
+      assert pq3.pop().equals(c4);
+      
+      assert pq3.isEmpty();
+      
+      pq3.push(c1);
+      pq3.push(c3);
+      
+      assert !pq3.isEmpty();
+      
+      assert pq3.pop().equals(c1);
+      assert pq3.pop().equals(c3);
+      
+      assert pq3.isEmpty();
    }
 }
