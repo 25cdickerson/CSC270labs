@@ -1,0 +1,17 @@
+public class TestQueue{
+  public static void main(String[] args){
+    // Create a new test queue
+    Queue test = new Queue();
+    
+    // Check if the test queue is empty
+    assert test.isEmpty();
+    
+    try{
+         test.pop();
+         assert false: "Should have thrown an exception";
+    }
+    catch(StackUnderFlowException e){}
+    
+    
+  }
+}
