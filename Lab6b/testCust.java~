@@ -49,29 +49,16 @@ public class testCust{
       assert pq1.pop().equals(c1);
       assert pq1.isEmpty();
       
-      //Create things to compare
-      /*
-      Customer c1 = new Customer(5, 5, 5);
-      Customer c2 = new Customer(3, 7, 2);
-      Customer c3 = new Customer(5, 5, 5);
-      Customer c4 = new Customer(5, 1, 3);
-      */
-      Customer c5 = new Customer(9, 9, 9);
-      Customer c6 = new Customer(3, 7, 2);
-      Customer c7 = new Customer(4, 8, 2);
-      
       // Push things to compare
       //pq1
       
-      pq1.push(c2);
       pq1.push(c1);
+      pq1.push(c2);
       
       assert !pq1.isEmpty();
       
       assert pq1.pop().equals(c1);
       assert pq1.pop().equals(c2);
-      
-      
       
       assert pq1.isEmpty();
       
@@ -136,22 +123,5 @@ public class testCust{
       assert pq3.pop().equals(c3);
       
       assert pq3.isEmpty();
-      
-      // Start new tests
-      PriorityQueue<Customer> pq4 = new PriorityQueue<Customer>(new Customer.WorthComparator());
-      Customer tst1 = new Customer(4,1,1);
-      Customer tst2 = new Customer(2,1,1);
-      Customer tst3 = new Customer(5,1,1);
-      Customer tst4 = new Customer(1,1,1);
-      
-      pq4.push(tst1);
-      pq4.push(tst2);
-      pq4.push(tst3);
-      pq4.push(tst4);
-      
-      assert pq4.pop().equals(tst3);
-      assert pq4.pop().equals(tst1);
-      assert pq4.pop().equals(tst2);
-      assert pq4.pop().equals(tst4);
    }
 }
