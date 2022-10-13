@@ -2,8 +2,8 @@ public class Queue<T>
 {
     //be sure that your attributes are protected, so subclasses can use them
 
-   private Node<T> head = null;
-   private Node<T> tail = null;
+   protected Node head = null;
+   protected Node tail = null;
    
    public Queue(){}
 
@@ -13,12 +13,12 @@ public class Queue<T>
    public void push(T val)
    {
       if(tail == null){
-         head = new Node<T>(val, head);
+         head = new Node(val, head);
          tail = head;
          return;
       }
       
-      tail.next = new Node<T>(val, null);
+      tail.next = new Node(val, null);
       tail = tail.next;
    }
 
@@ -54,9 +54,9 @@ public class Queue<T>
    }
 
    
-   private class Node<T>{
-      private Node next;
-      private T val;
+   protected class Node {
+      protected Node next;
+      protected T val;
       
       public Node(T val, Node next){
          this.next = next;
