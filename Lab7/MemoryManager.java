@@ -71,18 +71,29 @@ public class MemoryManager
          trav = trav.next;
        }
        
+       if(trav.getOwner().equals("free")){
+         isFreed = true;
+       }
+       
        if(isFreed == true){
-         pos = trav.getPosition();
-         ret =  new MemoryAllocation(requester, pos, size, trav, trav.next.next);
-         trav.next.next.prev = ret;
-         trav.next = ret;
-         
-         long nextPos = trav.next.next.getPosition();
-         if(nextPos > ret.getPosition() + ret.getLength()){
-           MemoryAllocation free = new MemoryAllocation("free", (ret.getPosition() + ret.getLength()), nextPos - (ret.getPosition() + ret.getLength()), ret, ret.next.next);
-           ret.next = free;
-           ret.next.next.prev = free;
+         long nextPos = trav.next.getPosition();
+         if(trav.getLength() == size){
+            // if the allocation is the same as the freed
+            trav.owner = requester;
          }
+         else{
+           // Change the original freed
+           long s = trav.getLength() - size;
+           trav.owner =  requester;
+           trav.setLength(size);
+           MemoryAllocation free = new MemoryAllocation("free", (trav.getPosition() + trav.getLength()), s, trav, trav.next);
+           System.out.println("size: " + s);
+           free.prev.next = free;
+           free.next.prev = free;
+           //ret.next = free;
+           //ret.next.next.prev = free;
+         }
+         return trav;
        }
        else{
          pos = trav.getPosition() + trav.getLength();
@@ -117,28 +128,28 @@ public class MemoryManager
      mem.owner = "free";
      
      // Check previous
-     long count = 0;
+     long count = mem.getLength();
      boolean isMerged = false;
-     long pos = mem.getPosition();
      while(mem.prev.getOwner().equals("free")){
-       if(mem.getPosition() < pos){
-         pos =  mem.getPosition();
-       }
-       count = count + mem.getLength();
        mem = mem.prev;
+       count = count + mem.getLength();
+       mem.next = mem.next.next;
+       mem.next.prev = mem;
        isMerged = true;
      }
      
      // Check next
      while(mem.next.getOwner().equals("free")){
-       count = count + mem.getLength();
        mem = mem.next;
+       count = count + mem.getLength();
+       mem.prev.next = mem.next;
+       mem.next.prev = mem;
        isMerged = true;
      }
       
      // Create new mem
      if(isMerged == true){
-       mem = new MemoryAllocation("free", pos, count, mem.prev, mem.next);
+       mem.setLength(count);
      }
    }
     

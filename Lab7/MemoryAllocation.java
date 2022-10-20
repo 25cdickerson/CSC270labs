@@ -36,6 +36,14 @@ public class MemoryAllocation
       return len;
     }
     
+    public void setLength(long size){
+      len = size;
+    }
+    
+    public void setPosition(long pos){
+      this.pos = pos;
+    }
+    
 
 
     public String toString()
