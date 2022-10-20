@@ -16,6 +16,7 @@ public class TestMemory{
     
     // Check all of the stored data is correct
     assert allocate2.getOwner().equals("Own2");
+    System.out.println(allocate2.getPosition());
     assert allocate2.getPosition() == 5;
     assert allocate2.getLength() == 4;
     

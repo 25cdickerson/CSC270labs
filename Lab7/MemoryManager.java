@@ -18,6 +18,20 @@ public class MemoryManager
      
      // Create the header node that holds no info
      head = new MemoryAllocation("header", 0, 0, head, head);
+     head.next = head;
+     head.prev = head;
+     
+     if(head == null){
+      System.out.println("head is null");
+     }
+     
+     if(head.next == null){
+      System.out.println("head.next is null");
+     }
+     
+     if(head.prev == null){
+      System.out.println("head.prev == null");
+     }
    }
 
 
@@ -30,16 +44,53 @@ public class MemoryManager
     
    public MemoryAllocation requestMemory(long size,String requester)
    {
+      long pos = 0;
       // Check if the allocation is greater than the memMan
      if(size > this.size || requester.equals("header") || requester.equals("free")){
        return null;
      }
      
      // Add to the linked list here
+     // If the list has not been added to yet
+     MemoryAllocation ret = null;
+     if(head.next == head){
+       ret = new MemoryAllocation(requester, 0, size, head, head);
+       head.next = ret;
+       head.prev = ret;
+       pos = pos + size;
+     }
+     else{
+       boolean isFreed = false;
+       MemoryAllocation trav = head;
+       long position = 0;
+       while(!trav.next.getOwner().equals(head.getOwner())){
+         if(trav.getOwner().equals("free") && trav.getLength() > size){
+            isFreed = true;
+            break;
+         }
+         trav = trav.next;
+       }
+       
+       pos = trav.getPosition() + trav.getLength();
+       
+       if(isFreed == false){  
+          ret =  new MemoryAllocation(requester, pos, size, trav, head);
+          trav.next = ret;
+          head.prev = ret;
+       }
+       else{
+         ret =  new MemoryAllocation(requester, pos, size, trav, trav.next.next);
+         trav.next.next.prev = ret;
+         trav.next = ret;
+       }
+ 
+         
+     }
      
      // Updated size
      this.size = this.size - size;
      
+     return ret;
    }
 
 
