@@ -218,5 +218,17 @@ public class TestMemory{
     assert D.getPosition() == 0;
     assert D.getLength() == 60;    
     
+    // Create one last to check
+    MemoryManager memm = new MemoryManager(100);
+    
+    MemoryAllocation alloc = memm.requestMemory(100, "Fred");
+    
+    assert memm.requestMemory(1, "Fred") == null;
+    
+    memm.returnMemory(alloc);
+    
+    MemoryAllocation alloc2 = memm.requestMemory(100, "Fred");
+    
+    assert memm.requestMemory(1, "Fred") == null;
   }
 }

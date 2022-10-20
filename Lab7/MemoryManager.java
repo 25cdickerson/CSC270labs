@@ -86,18 +86,15 @@ public class MemoryManager
        }
        else{
          pos = trav.getPosition() + trav.getLength();
-         ret =  new MemoryAllocation(requester, pos, size, trav, head);
-         trav.next = ret;
-         head.prev = ret;
+         if(pos + size <= this.size){
+           ret =  new MemoryAllocation(requester, pos, size, trav, head);
+           trav.next = ret;
+           head.prev = ret;
+         }
        }
        
 
-       }
- 
-         
-    
-     // Updated size
-     this.size = this.size - size;
+     }
      
      return ret;
    }
@@ -111,9 +108,6 @@ public class MemoryManager
      */
    public void returnMemory(MemoryAllocation mem)
    {
-     // Update size
-     size = size + mem.getLength();
-     
      mem.owner = "free";
      
      // Check previous
