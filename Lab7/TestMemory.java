@@ -75,7 +75,6 @@ public class TestMemory{
     mem3.returnMemory(a2);
     mem3.returnMemory(a4);
     
-    System.out.println(a4.owner);
     // Add memory allocations to see if they add in the correct place
     MemoryAllocation a8 = mem3.requestMemory(5, "Own");
     
@@ -87,7 +86,6 @@ public class TestMemory{
     MemoryAllocation a9 = mem3.requestMemory(20, "Own");
     
     assert a9.getOwner().equals("Own");
-    System.out.println(a9.getPosition());
     assert a9.getPosition() == 30;
     assert a9.getLength() == 20;
     
@@ -95,7 +93,6 @@ public class TestMemory{
     MemoryAllocation a10 = mem3.requestMemory(10, "Own");
         
     assert a10.getOwner().equals("Own");
-    System.out.println(a10.getPosition());
     assert a10.getPosition() == 15;
     assert a10.getLength() == 10;
     
@@ -124,7 +121,6 @@ public class TestMemory{
     
    
     assert alo8.getOwner().equals("Own");
-    System.out.println(alo8.getPosition());
     assert alo8.getPosition() == 10;
     assert alo8.getLength() == 20;
     

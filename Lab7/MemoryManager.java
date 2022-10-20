@@ -20,18 +20,6 @@ public class MemoryManager
      head = new MemoryAllocation("header", 0, 0, head, head);
      head.next = head;
      head.prev = head;
-     
-     if(head == null){
-      System.out.println("head is null");
-     }
-     
-     if(head.next == null){
-      System.out.println("head.next is null");
-     }
-     
-     if(head.prev == null){
-      System.out.println("head.prev == null");
-     }
    }
 
 
@@ -60,6 +48,8 @@ public class MemoryManager
        pos = pos + size;
      }
      else{
+       // Search for a place to put the memory
+       // If there is a free space in the middle break and add there
        boolean isFreed = false;
        MemoryAllocation trav = head;
        long position = 0;
@@ -87,7 +77,6 @@ public class MemoryManager
            trav.owner =  requester;
            trav.setLength(size);
            MemoryAllocation free = new MemoryAllocation("free", (trav.getPosition() + trav.getLength()), s, trav, trav.next);
-           System.out.println("size: " + s);
            free.prev.next = free;
            free.next.prev = free;
            //ret.next = free;
