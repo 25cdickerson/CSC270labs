@@ -16,7 +16,6 @@ public class TestMemory{
     
     // Check all of the stored data is correct
     assert allocate2.getOwner().equals("Own2");
-    System.out.println(allocate2.getPosition());
     assert allocate2.getPosition() == 5;
     assert allocate2.getLength() == 4;
     
@@ -75,7 +74,9 @@ public class TestMemory{
     // Return the memory to check the use
     mem3.returnMemory(a2);
     mem3.returnMemory(a4);
+    System.out.println(a4.getPosition() + " " + a4.getLength() + " " + a4.getOwner());
     
+    System.out.println(a4.owner);
     // Add memory allocations to see if they add in the correct place
     MemoryAllocation a8 = mem3.requestMemory(5, "Own");
     
@@ -87,6 +88,7 @@ public class TestMemory{
     MemoryAllocation a9 = mem3.requestMemory(20, "Own");
     
     assert a9.getOwner().equals("Own");
+    System.out.println(a9.getPosition());
     assert a9.getPosition() == 30;
     assert a9.getLength() == 20;
     

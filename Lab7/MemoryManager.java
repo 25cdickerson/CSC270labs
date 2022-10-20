@@ -64,29 +64,38 @@ public class MemoryManager
        MemoryAllocation trav = head;
        long position = 0;
        while(!trav.next.getOwner().equals(head.getOwner())){
-         if(trav.getOwner().equals("free") && trav.getLength() > size){
+         if(trav.getOwner().equals("free") && trav.getLength() >= size){
             isFreed = true;
             break;
          }
          trav = trav.next;
        }
        
-       pos = trav.getPosition() + trav.getLength();
-       
-       if(isFreed == false){  
-          ret =  new MemoryAllocation(requester, pos, size, trav, head);
-          trav.next = ret;
-          head.prev = ret;
-       }
-       else{
+       if(isFreed == true){
+         pos = trav.getPosition();
          ret =  new MemoryAllocation(requester, pos, size, trav, trav.next.next);
          trav.next.next.prev = ret;
          trav.next = ret;
+         
+         long nextPos = trav.next.next.getPosition();
+         if(nextPos > ret.getPosition() + ret.getLength()){
+           MemoryAllocation free = new MemoryAllocation("free", (ret.getPosition() + ret.getLength()), nextPos - (ret.getPosition() + ret.getLength()), ret, ret.next.next);
+           ret.next = free;
+           ret.next.next.prev = free;
+         }
+       }
+       else{
+         pos = trav.getPosition() + trav.getLength();
+         ret =  new MemoryAllocation(requester, pos, size, trav, head);
+         trav.next = ret;
+         head.prev = ret;
+       }
+       
+
        }
  
          
-     }
-     
+    
      // Updated size
      this.size = this.size - size;
      
@@ -104,6 +113,8 @@ public class MemoryManager
    {
      // Update size
      size = size + mem.getLength();
+     
+     mem.owner = "free";
      
      // Check previous
      long count = 0;
