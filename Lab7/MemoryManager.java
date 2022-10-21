@@ -125,8 +125,11 @@ public class MemoryManager
      while(mem.next.getOwner().equals("free")){
        mem = mem.next;
        count = count + mem.getLength();
-       mem.prev.next = mem.next;
-       mem.next.prev = mem;
+       mem = mem.prev;
+       mem.next = mem.next.next;
+       mem.next.next.prev = mem;
+       //mem.prev.next = mem.next;
+       //mem.next.prev = mem;
        isMerged = true;
      }
       
