@@ -223,12 +223,22 @@ public class TestMemory{
     
     MemoryAllocation alloc = memm.requestMemory(100, "Fred");
     
-    assert memm.requestMemory(1, "Fred") == null;
+    //assert memm.requestMemory(1, "Fred") == null;
     
     memm.returnMemory(alloc);
     
     MemoryAllocation alloc2 = memm.requestMemory(100, "Fred");
     
-    assert memm.requestMemory(1, "Fred") == null;
+    //assert memm.requestMemory(1, "Fred") == null;
+    
+    // Create another
+    MemoryManager mem9 = new MemoryManager(10);
+    assert mem9.requestMemory(3, "own") != null;
+    assert mem9.requestMemory(4, "own") != null;
+    assert mem9.requestMemory(2, "own") != null;
+    assert mem9.requestMemory(1, "own") != null;
+    assert mem9.requestMemory(2, "own") == null;
+
+
   }
 }
