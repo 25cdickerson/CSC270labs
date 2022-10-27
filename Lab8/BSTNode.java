@@ -14,8 +14,6 @@ public class BSTNode<T extends Comparable<T>>
    private BSTNode<T> left;
    private BSTNode<T> right;
 
-
-
    public BSTNode(T val)
    {
       this(val,null,null);
@@ -24,6 +22,9 @@ public class BSTNode<T extends Comparable<T>>
 
    public BSTNode(T val, BSTNode<T> l,BSTNode<T> r)
    {
+      this.val = val;
+      left = l;
+      right = r;
    }
 
 
@@ -33,7 +34,33 @@ public class BSTNode<T extends Comparable<T>>
     */
    public void insert(T target)
    {
+      insert(target, this);
    }
+   
+   // Helper Function For Insert
+   public void insert(T target, BSTNode<T> node){
+   {
+      // Check if target is greater than val
+      if(target > val){
+         // Insert if right is null
+         if(right == null){
+            right = new BSTNode(target);
+            return;
+         }
+         // If not move to the next
+         insert(target, node.right);
+      }
+      else{
+         // Insert if left is null
+         if(left == null){
+            left = new BSTNode(target);
+            return;
+         }
+         // If not move to the next
+         insert(target, node.left);
+      }
+   }
+
 
 
    /*
@@ -42,6 +69,24 @@ public class BSTNode<T extends Comparable<T>>
     */
    public T retrieve(T target)
    {
+      return retrieve(target, this);
+   }
+   
+   // Helper Function for retrieve
+   public T retrieve(T target, BSTNode<T> node){
+      // Check if at a leaf
+      if(node.right == null && node.left == null){
+         if(node.val == target){
+            return target;
+         }
+         // If not on leaf, return null
+         return null;
+      }
+      
+      // Move right
+      
+      
+      // Move left
    }
 
 
