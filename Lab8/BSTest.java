@@ -180,13 +180,15 @@ public class BSTest{
     BSTree em = new BSTree();
     BSTree em2 = new BSTree();
     
-    assert !em.equals(em2);
-    assert comp.equals(same);
-    assert !comp.equals(em);
-    assert !comp.equals(diff1);
-    assert !comp.equals(diff2);
-    assert !comp.equals(diff3);
-    assert !comp.equals(diff4);
+    assert em.myEquals(em2);
+    assert !em.myEquals(comp);
+    assert !em2.myEquals(comp);
+    assert comp.myEquals(same);
+    assert !comp.myEquals(em);
+    assert !comp.myEquals(diff1);
+    assert !comp.myEquals(diff2);
+    assert !comp.myEquals(diff3);
+    assert !comp.myEquals(diff4);
     
   }
 }
