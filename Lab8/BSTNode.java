@@ -74,19 +74,30 @@ public class BSTNode<T extends Comparable<T>>
    
    // Helper Function for retrieve
    public T retrieve(T target, BSTNode<T> node){
-      // Check if at a leaf
-      if(node.right == null && node.left == null){
-         if(node.val == target){
-            return target;
+      // Check if target is greater than val
+      if(target > val){
+         // Check for leaf
+         if(right == null){
+            return null;
          }
-         // If not on leaf, return null
-         return null;
+         
+         // If not move to the next
+         retrieve(target, node.right);
       }
-      
-      // Move right
-      
-      
-      // Move left
+      // If target is less than val
+      else if{
+         // Check for Leaf
+         if(left == null){
+            return null;
+         }
+         // If not move to the next
+         retrieve(target, node.left);
+      }
+      // If target is val
+      else{
+         // return val
+         return val;
+      }
    }
 
 
@@ -96,6 +107,34 @@ public class BSTNode<T extends Comparable<T>>
      */
    public int retrieveDepth(T target)
    {
+      retrieveDepth(target, this, 0);
+   }
+   
+   // Helper Function For retrieveDepth
+   public int retrieveDepth(T target, BSTNode<T> node, int count){
+   {
+      // Check if target is greater than val
+      if(target > val){
+         // return the count if no more rights to look at
+         if(right == null){
+            return count;
+         }
+         // If not move to the next
+         retrieveDepth(target, node.right, count+1);
+      }
+      else if(target < val){
+         // return the count if no more lefts to look at
+         if(left == null){
+            return count;
+         }
+         // If not move to the next
+         retrieveDepth(target, node.left, count+1);
+      }
+      // Target is equal to val
+      else{
+         // return the count
+         return count;
+      }
    }
 
    /**
