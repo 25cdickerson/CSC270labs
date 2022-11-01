@@ -11,8 +11,7 @@ public class BSTree
 
    public BSTree()
    {
-   
-       
+      root = null;
    }
 
     /**
@@ -29,6 +28,7 @@ public class BSTree
      */
    public void insert(Integer target)
    {
+      root.insert(target, root);
    }
 
 
@@ -38,6 +38,7 @@ public class BSTree
      */
    public Integer retrieve(Integer target)
    {
+      return root.retrieve(target, root);
    }
 
 
@@ -51,7 +52,7 @@ public class BSTree
      */
    public int retrieveDepth(Integer target)
    {
-       
+       return root.retrieveDepth(target, root, 0);
    }
 
     
@@ -93,7 +94,7 @@ public class BSTree
     */
    public Integer largest()
    {
-   
+      return root.getLargest(root);
    }
 
 
@@ -116,9 +117,9 @@ public class BSTree
             {
                public void accept(Integer i)
                {
-               //need to add some code here...
+                  L.add(i);
                }
-            });
+            }, root);
       }
       return L;
    
@@ -133,6 +134,14 @@ public class BSTree
      */
    public int sum()
    {
+      int nums = 0;
+      
+      List<Integer> sum = toList();
+      for(int i = 0; i < sum.size(); i++){
+         nums = nums + sum.get(i);
+      }
+      
+      return nums;
    }
 
 
@@ -149,7 +158,13 @@ public class BSTree
      */
    public boolean myEquals(BSTree that)
    {
-   
+      // Check for null in that
+      if(that == null){
+         return false;
+      }
+      
+      // recursivly check the tree
+      return root.myEquals(that.root, root);
    }
 
 
