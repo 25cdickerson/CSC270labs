@@ -12,7 +12,7 @@ public class BSTree
    // Constructor
    public BSTree()
    {
-      root = new BSTNode();
+      root = null;
    }
 
     /**
@@ -20,7 +20,7 @@ public class BSTree
      */
    public boolean isEmpty()
    {
-      return root.getVal()==null;
+      return root==null;
    }
 
 
@@ -29,7 +29,12 @@ public class BSTree
      */
    public void insert(Integer target)
    {  
-      root.insert(target, root);
+      if(isEmpty()){
+         root = new BSTNode(target);
+      }
+      else{
+         root.insert(target);
+      }
    }
 
 
@@ -39,7 +44,12 @@ public class BSTree
      */
    public Integer retrieve(Integer target)
    {  
-      return root.retrieve(target, root);
+      // If empty tree return null
+      if(isEmpty()){
+         return null;
+      }
+      // Otherwise recurse
+      return root.retrieve(target);
    }
 
 
@@ -53,8 +63,11 @@ public class BSTree
      */
    public int retrieveDepth(Integer target)
    {
+      if(isEmpty()){
+         return 0;
+      }
 
-      return root.retrieveDepth(target, root, 0);
+      return root.retrieveDepth(target, 0);
    }
 
     
@@ -78,7 +91,7 @@ public class BSTree
     */
    public int getSize()
    {
-      if(root.getVal()==null) 
+      if(root==null) 
          return 0;
    
       CountConsumer count = new CountConsumer();
@@ -96,7 +109,7 @@ public class BSTree
     */
    public Integer largest()
    {
-      if(root.getVal() == null){
+      if(root == null){
          return null;
       }
       return root.getLargest(root);
@@ -114,7 +127,7 @@ public class BSTree
        
       List<Integer> L= new ArrayList<Integer>();
    
-      if(root.getVal() != null)
+      if(root != null)
       {
          root.inOrderTraversal(
             //hey look, an anonymous class 		       
@@ -167,9 +180,19 @@ public class BSTree
       if(that == null){
          return false;
       }
-      
-      // recursivly check the tree
-      return root.myEquals(that.root, root);
+      else if(that.isEmpty() && isEmpty()){
+         return true;
+      }
+      else if(!that.isEmpty() && isEmpty()){
+         return false;
+      }
+      else if(that.isEmpty() && !isEmpty()){
+         return false;
+      }
+      else{
+         // recursivly check the tree
+         return root.myEquals(that.root);
+      }
    }
 
 

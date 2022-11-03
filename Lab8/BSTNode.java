@@ -38,29 +38,25 @@ public class BSTNode<T extends Comparable<T>>
     */
    
    // Helper Function For Insert
-   public void insert(T target, BSTNode<T> node){
-      if(node.val == null){
-         node = new BSTNode(target);
-      }
-      
+   public void insert(T target){
       // Check if target is greater than val
-      if(target.compareTo(node.val) > 0){
+      if(target.compareTo(val) > 0){
          // Insert if right is null
          if(right == null){
-            right = new BSTNode(target);
+            right = new BSTNode<T>(target);
             return;
          }
          // If not move to the next
-         insert(target, node.right);
+         right.insert(target);
       }
       else{
          // Insert if left is null
          if(left == null){
-            left = new BSTNode(target);
+            left = new BSTNode<T>(target);
             return;
          }
          // If not move to the next
-         insert(target, node.left);
+         left.insert(target);
       }
    }
 
@@ -71,30 +67,30 @@ public class BSTNode<T extends Comparable<T>>
      Returns null if it can't find the value.
     */
    // Helper Function for retrieve
-   public T retrieve(T target, BSTNode<T> node){
+   public T retrieve(T target){
       // Check if target is greater than val
-      if(target.compareTo(node.val) > 0){
+      if(target.compareTo(val) > 0){
          // Check for leaf
          if(right == null){
             return null;
          }
          
          // If not move to the next
-         return retrieve(target, node.right);
+         return right.retrieve(target);
       }
       // If target is less than val
-      else if(target.compareTo(node.val) < 0){
+      else if(target.compareTo(val) < 0){
          // Check for Leaf
          if(left == null){
             return null;
          }
          // If not move to the next
-         return retrieve(target, node.left);
+         return left.retrieve(target);
       }
       // If target is val
       else{
          // return val
-         return node.val;
+         return val;
       }
    }
 
@@ -104,23 +100,23 @@ public class BSTNode<T extends Comparable<T>>
        If it is not present, what level would it be placed.
      */
    // Helper Function For retrieveDepth
-   public int retrieveDepth(T target, BSTNode<T> node, int count){
-      // Check if target is greater than val
-      if(target.compareTo(node.val) > 0){
+   public int retrieveDepth(T target, int count){
+      // Check if target is less than val
+      if(val.compareTo(target) < 0){
          // return the count if no more rights to look at
          if(right == null){
-            return count;
+            return count+1;
          }
          // If not move to the next
-         return retrieveDepth(target, node.right, count+1);
+         return right.retrieveDepth(target, count+1);
       }
-      else if(target.compareTo(node.val) < 0){
+      else if(val.compareTo(target) > 0){
          // return the count if no more lefts to look at
          if(left == null){
-            return count;
+            return count+1;
          }
          // If not move to the next
-         return retrieveDepth(target, node.left, count+1);
+         return left.retrieveDepth(target, count+1);
       }
       // Target is equal to val
       else{
@@ -151,45 +147,17 @@ public class BSTNode<T extends Comparable<T>>
     */
    public void inOrderTraversal(Consumer<T> consume)
    {  
-     ArrayList<BSTNode> inOrderTrav = new ArrayList<>();
-     
-     // Create Nodes to Traverse Left and Right
-     BSTNode l = this;
-     BSTNode r = this.right;
-     
-     // Traverse Left and Right
-     while(l != null){
-       inOrderTrav.add(l);
-       l = l.left;
-     }
-     
-     while(r != null){
-       inOrderTrav.add(r);
-       r = r.right;
-     }
-     
-      // Outer loop
-      for (int i = 0; i < inOrderTrav.size(); i++) {
-            // Inner nested loop pointing 1 index ahead
-            for (int j = i + 1; j < inOrderTrav.size(); j++) {
- 
-                // Checking elements
-                BSTNode temp = null;
-                if (inOrderTrav.get(j).val.compareTo(inOrderTrav.get(i).val) < 0) {
- 
-                    // Swapping
-                    temp = inOrderTrav.get(i);
-                    inOrderTrav.set(i, inOrderTrav.get(j));
-                    inOrderTrav.set(j, temp);
-                }
-            }
-      }
-            
-      // Use Consumer to Add
-      for(int i = 0; i < inOrderTrav.size(); i++){
-        T var = (T)inOrderTrav.get(i).val;
-        consume.accept(var);
-      }
+        if(left != null){
+         left.inOrderTraversal(consume);
+        }
+        
+        if(this != null){
+         consume.accept(this.val);
+        }
+        
+        if(right != null){
+         right.inOrderTraversal(consume);
+        }
    }
 
 
@@ -202,30 +170,16 @@ public class BSTNode<T extends Comparable<T>>
      
      This one is long!
     */   
-   public boolean myEquals(BSTNode<T> that, BSTNode<T> thiss){
-   
-      // Check if the values are equal
-      if(!that.val.equals(thiss.val)){
-         return false;
-      }
+   public boolean myEquals(BSTNode<T> that){
       
-      // If make it to null, return true
-      if(that.left == null && thiss.left == null && that.right == null && thiss.right == null){
+      if(this == null && that == null){
          return true;
       }
       
-      // Recurse left and right
-      // if left and right are not null and they're next vals are equal, then recurse
-      // else return false
-      if((that.left != null && thiss.left != null) && (that.left.val.equals(thiss.left.val))){
-         return myEquals(that.left, thiss.left);
+      if(that != null && this != null){
+         return (that.val.equals(this.val) && left.myEquals(that.left) && right.myEquals(that.right));
       }
-      else if((that.right != null && thiss.right != null) && (that.right.val.equals(thiss.right.val))){
-         return myEquals(that.right, thiss.right);
-      }
-      else{
-         return false;
-      }
+      return false;
       
    }
    
