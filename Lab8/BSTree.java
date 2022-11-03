@@ -9,9 +9,10 @@ public class BSTree
     
    private BSTNode<Integer> root;
 
+   // What goes in BSTree Constructor??
    public BSTree()
    {
-      root = null;
+   
    }
 
     /**
@@ -27,7 +28,7 @@ public class BSTree
        inserts target into the tree
      */
    public void insert(Integer target)
-   {
+   {  
       root.insert(target, root);
    }
 
@@ -37,7 +38,7 @@ public class BSTree
        returns null if target is not in the tree.
      */
    public Integer retrieve(Integer target)
-   {
+   {  
       return root.retrieve(target, root);
    }
 
@@ -52,7 +53,8 @@ public class BSTree
      */
    public int retrieveDepth(Integer target)
    {
-       return root.retrieveDepth(target, root, 0);
+
+      return root.retrieveDepth(target, root, 0);
    }
 
     
@@ -94,6 +96,9 @@ public class BSTree
     */
    public Integer largest()
    {
+      if(root == null){
+         return null;
+      }
       return root.getLargest(root);
    }
 
@@ -119,7 +124,7 @@ public class BSTree
                {
                   L.add(i);
                }
-            }, root);
+            });
       }
       return L;
    

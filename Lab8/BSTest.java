@@ -28,6 +28,7 @@ public class BSTest{
     tree.insert(5);
     
     // Check that the tree is not empty
+    System.out.println(tree.isEmpty());
     assert !tree.isEmpty();
     
     // Check the retrieve is working correctly

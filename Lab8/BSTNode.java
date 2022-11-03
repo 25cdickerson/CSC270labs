@@ -15,6 +15,8 @@ public class BSTNode<T extends Comparable<T>>
    private T val;
    private BSTNode<T> left;
    private BSTNode<T> right;
+   
+   public BSTNode(){}
 
    public BSTNode(T val)
    {
@@ -37,6 +39,7 @@ public class BSTNode<T extends Comparable<T>>
    
    // Helper Function For Insert
    public void insert(T target, BSTNode<T> node){
+   
       // Check if target is greater than val
       if(target.compareTo(node.val) > 0){
          // Insert if right is null
@@ -143,17 +146,17 @@ public class BSTNode<T extends Comparable<T>>
       "Visit" should be.
 
     */
-   public void inOrderTraversal(Consumer<T> consume, BSTNode node)
+   public void inOrderTraversal(Consumer<T> consume)
    {  
-     ArrayList<T> inOrderTrav = new ArrayList<T>();
+     ArrayList<BSTNode> inOrderTrav = new ArrayList<>();
      
      // Create Nodes to Traverse Left and Right
-     BSTNode l = node;
-     BSTNode r = node.right;
+     BSTNode l = this;
+     BSTNode r = this.right;
      
      // Traverse Left and Right
      while(l != null){
-       inOrderTrav.add(l.val);
+       inOrderTrav.add(l);
        l = l.left;
      }
      
@@ -168,20 +171,21 @@ public class BSTNode<T extends Comparable<T>>
             for (int j = i + 1; j < inOrderTrav.size(); j++) {
  
                 // Checking elements
-                T temp = null;
-                if (inOrderTrav.get(j).compareTo(inOrderTrav.get(i)) < 0) {
+                BSTNode temp = null;
+                if (inOrderTrav.get(j).val.compareTo(inOrderTrav.get(i).val) < 0) {
  
                     // Swapping
-                    temp = inOrderTrav.at(i);
-                    inOrderTrav.get(i) = inOrderTrav.get(j);
-                    inOrderTrav.get(j) = temp;
+                    temp = inOrderTrav.get(i);
+                    inOrderTrav.set(i, inOrderTrav.get(j));
+                    inOrderTrav.set(j, temp);
                 }
             }
       }
             
       // Use Consumer to Add
       for(int i = 0; i < inOrderTrav.size(); i++){
-        consume.accept(inOrderTrav.get(i));
+        T var = (T)inOrderTrav.get(i).val;
+        consume.accept(var);
       }
    }
 
@@ -213,17 +217,17 @@ public class BSTNode<T extends Comparable<T>>
       if((that.left != null && thiss.left != null) && (that.left.val.equals(thiss.left.val))){
          return myEquals(that.left, thiss.left);
       }
-      else{
-         return false;
-      }
-      
-      if((that.right != null && thiss.right != null) && (that.right.val.equals(thiss.right.val))){
+      else if((that.right != null && thiss.right != null) && (that.right.val.equals(thiss.right.val))){
          return myEquals(that.right, thiss.right);
       }
       else{
          return false;
       }
       
+   }
+   
+   public T getVal(){
+      return val;
    }
 
 }
