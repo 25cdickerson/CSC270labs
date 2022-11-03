@@ -39,7 +39,10 @@ public class BSTNode<T extends Comparable<T>>
    
    // Helper Function For Insert
    public void insert(T target, BSTNode<T> node){
-   
+      if(node.val == null){
+         node = new BSTNode(target);
+      }
+      
       // Check if target is greater than val
       if(target.compareTo(node.val) > 0){
          // Insert if right is null

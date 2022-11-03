@@ -9,10 +9,10 @@ public class BSTree
     
    private BSTNode<Integer> root;
 
-   // What goes in BSTree Constructor??
+   // Constructor
    public BSTree()
    {
-   
+      root = new BSTNode();
    }
 
     /**
@@ -20,7 +20,7 @@ public class BSTree
      */
    public boolean isEmpty()
    {
-      return root==null;
+      return root.getVal()==null;
    }
 
 
@@ -78,7 +78,7 @@ public class BSTree
     */
    public int getSize()
    {
-      if(root==null) 
+      if(root.getVal()==null) 
          return 0;
    
       CountConsumer count = new CountConsumer();
@@ -96,7 +96,7 @@ public class BSTree
     */
    public Integer largest()
    {
-      if(root == null){
+      if(root.getVal() == null){
          return null;
       }
       return root.getLargest(root);
@@ -114,7 +114,7 @@ public class BSTree
        
       List<Integer> L= new ArrayList<Integer>();
    
-      if(root != null)
+      if(root.getVal() != null)
       {
          root.inOrderTraversal(
             //hey look, an anonymous class 		       
