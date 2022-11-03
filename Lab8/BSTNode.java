@@ -159,6 +159,35 @@ public class BSTNode<T extends Comparable<T>>
          right.inOrderTraversal(consume);
         }
    }
+   
+   public void preOrderTraversal(Consumer<T> consume){
+        if(this != null){
+           consume.accept(this.val);
+        }
+        
+        if(left != null){
+           left.inOrderTraversal(consume);
+        }
+ 
+        if(right != null){
+           right.inOrderTraversal(consume);
+        }
+   }
+   
+   public void postOrderTraversal(Consumer<T> consume){
+        if(left != null){
+           left.inOrderTraversal(consume);
+        }
+ 
+        if(right != null){
+           right.inOrderTraversal(consume);
+        }
+        
+        if(this != null){
+           consume.accept(this.val);
+        }
+   }
+
 
 
    /**
@@ -171,32 +200,74 @@ public class BSTNode<T extends Comparable<T>>
      This one is long!
     */   
    public boolean myEquals(BSTNode<T> that){
+      // Check PreOrder, PostOrder, and InOrder
+      ArrayList<T> preO = new ArrayList<>();
+      ArrayList<T> preO1 = new ArrayList<>();
+      ArrayList<T> postO = new ArrayList<>();
+      ArrayList<T> postO1 = new ArrayList<>();
+      ArrayList<T> inO = new ArrayList<>();
+      ArrayList<T> inO1 = new ArrayList<>();
       
-      if(this == null && that == null){
-         return true;
-      }
+      this.preOrderTraversal(
+            new Consumer<T>() //here is the type 
+            {
+               public void accept(T i)
+               {
+                  preO.add(i);
+               }
+            });
       
-      if(that != null && this != null){
-         //if both == null
-         if(left == null && right == null){
-            return (that.val.equals(this.val));
-         }
-         // if left == null
-         else if(left == null){
-            return (that.val.equals(this.val) && right.myEquals(that.right));
-         }
-         // if right == null
-         else if(right == null){
-            return (that.val.equals(this.val) && left.myEquals(that.left));
-         }
-         //if neither == null
-         else{
-            return (that.val.equals(this.val) && right.myEquals(that.right) && left.myEquals(that.left));
-         }
-      }
-      return false;
-      
+      that.preOrderTraversal(
+            new Consumer<T>() //here is the type 
+            {
+               public void accept(T i)
+               {
+                  preO1.add(i);
+               }
+            });
+            
+      this.postOrderTraversal(
+            new Consumer<T>() //here is the type 
+            {
+               public void accept(T i)
+               {
+                  postO.add(i);
+               }
+            });
+            
+       that.postOrderTraversal(
+            new Consumer<T>() //here is the type 
+            {
+               public void accept(T i)
+               {
+                  postO1.add(i);
+               }
+            });
+            
+       this.inOrderTraversal(
+            new Consumer<T>() //here is the type 
+            {
+               public void accept(T i)
+               {
+                  inO.add(i);
+               }
+            });
+            
+        that.inOrderTraversal(
+            new Consumer<T>() //here is the type 
+            {
+               public void accept(T i)
+               {
+                  inO1.add(i);
+               }
+            });
+            
+        if(preO.equals(preO1) && postO.equals(postO1) && inO.equals(inO1)){
+            return true;
+        }
+        return false;
    }
+   
    
    public T getVal(){
       return val;
