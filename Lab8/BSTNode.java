@@ -177,7 +177,22 @@ public class BSTNode<T extends Comparable<T>>
       }
       
       if(that != null && this != null){
-         return (that.val.equals(this.val) && left.myEquals(that.left) && right.myEquals(that.right));
+         //if both == null
+         if(left == null && right == null){
+            return (that.val.equals(this.val));
+         }
+         // if left == null
+         else if(left == null){
+            return (that.val.equals(this.val) && right.myEquals(that.right));
+         }
+         // if right == null
+         else if(right == null){
+            return (that.val.equals(this.val) && left.myEquals(that.left));
+         }
+         //if neither == null
+         else{
+            return (that.val.equals(this.val) && right.myEquals(that.right) && left.myEquals(that.left));
+         }
       }
       return false;
       
