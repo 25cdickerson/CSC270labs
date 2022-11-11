@@ -4,7 +4,9 @@ import java.util.Scanner;
 
 public class QTree
 {
-	
+	Node root;
+   Node duck;
+   Node rock;
 	
 	Scanner in;
 	PrintStream out;
@@ -14,15 +16,30 @@ public class QTree
 	{
 		this.out=out;
 		this.in=new Scanner(in);
-		//Please initialize your data here
+		root = new Node(Strings.IS_IT_ALIVE);
+      duck = new Node("Duck");
+      rock = new Node("Rock");
+      root.yes = duck;
+      root.no = rock;
+      duck.parent = root;
+      rock.parent = root;
 	}
 	
-    
     //plays the game, be sure to grab input from the Scanner "in", and send your output to "out".
 	public void playGame()
 	{
-		//??
-        
+      // Start Questions
+      root.playGame(in, out);
+      out.println(Strings.PLAY_AGAIN);
+      out.flush();
+      String line = in.nextLine();
+      
+      do{
+         root.playGame(in, out);
+         out.println(Strings.PLAY_AGAIN);
+         out.flush();
+         line = in.nextLine();
+      }while(line.equals("y") || line.equals("Y"));
 	}
 	
 	
