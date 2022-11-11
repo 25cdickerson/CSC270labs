@@ -61,28 +61,29 @@ public class Node{
             Node nodeQues = new Node(question);
             Node nodeAns = new Node(newAns);
             // Having out of bounds issues here
-            /*if(root.parent.yes.str.equals(root.str)){
+            if(root.parent.yes.str.equals(root.str)){
                root.parent.yes = nodeQues;
-            }*/
-            //else{
-               root.parent.yes = nodeQues;
-            //}
+            }
+            else if(root.parent.no.str.equals(root.str)){
+               root.parent.no = nodeQues;
+            }
             nodeQues.parent = root.parent;
             root.parent = nodeQues;
             nodeQues.yes = nodeAns;
             nodeQues.no = root;
+            nodeAns.parent = nodeQues;
          }
          else{
             // check which way parent went
             Node nodeQues = new Node(question);
             Node nodeAns = new Node(newAns);
             // Having out of bounds issues here
-            /*if(root.parent.yes.str.equals(root.str)){
+            if(root.parent.yes.str.equals(root.str)){
                root.parent.yes = nodeQues;
-            }*/
-            //else{
+            }
+            else if(root.parent.no.str.equals(root.str)){
                root.parent.no = nodeQues;
-            //}
+            }
             nodeQues.parent = root.parent;
             root.parent = nodeQues;
             nodeQues.no = nodeAns;
