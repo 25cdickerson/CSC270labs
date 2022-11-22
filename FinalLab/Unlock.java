@@ -9,12 +9,13 @@ public class Unlock{
    public static final int POKE = 3;
    public static final int TWIST = 4;
    // Variable to store the lock
-   TheLock lock;
+   public TheLock lock;
    
    public Node BFS(Node curr){
       Node temp;
       Queue<Node> q = new LinkedList<Node>();
       q.add(curr);
+      int cDepth = 0;
       
       // Check if queue is empty
       while(!q.empty){
@@ -24,13 +25,33 @@ public class Unlock{
          while(temp.parent != null){
             temp = temp.next
             // Apply action to the lock here
-            
+            if(temp.operation == SHAKE){
+               lock.shakeIt()
+            }
+            else if(temp.operation == PULL){
+               lock.pullIt();
+            }
+            else if(temp.operation == POKE){
+               lock.pokeIt();
+            }
+            else if(temp.operation == TWIST){
+               lock.twistIt();
+            }
          }
-         
          // Check if unlocked
-         
-         // if not, generate children
-         
+         if(lock.isUnlocked()){
+            return temp;
+         }
+         else{
+            // if not, reset the lock
+            lock.resetLock()
+            
+            // Generate children
+            q.add(new Node(temp, cDepth+1, 1);
+            q.add(new Node(temp, cDepth+1, 2);
+            q.add(new Node(temp, cDepth+1, 3);
+            q.add(new Node(temp, cDepth+1, 4);
+         }
       }
    }
    
