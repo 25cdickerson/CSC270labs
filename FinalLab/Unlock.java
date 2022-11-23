@@ -1,5 +1,6 @@
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 public class Unlock{
    // Variables to store operations
@@ -8,25 +9,28 @@ public class Unlock{
    public static final int PULL = 2;
    public static final int POKE = 3;
    public static final int TWIST = 4;
-   // Variable to store the lock
-   public TheLock lock;
    
-   public Node BFS(Node curr){
-      Node temp;
+   
+   public Unlock(){};
+   
+   public Node BFS(TheLock lock){
+      long start = System.nanoTime();
+      Node root = new Node(null, 0, UNLOCK);
+      Node temp = root;
       Queue<Node> q = new LinkedList<Node>();
-      q.add(curr);
+      q.add(root);
       int cDepth = 0;
       
       // Check if queue is empty
-      while(!q.empty){
+      while(!q.isEmpty()){
          temp = q.peek();
          q.remove();
          // Go up the tree to check if unlock
-         while(temp.parent != null){
-            temp = temp.next
+         while(temp.operation != UNLOCK){
+            temp = temp.parent;
             // Apply action to the lock here
             if(temp.operation == SHAKE){
-               lock.shakeIt()
+               lock.shakeIt();
             }
             else if(temp.operation == PULL){
                lock.pullIt();
@@ -37,35 +41,33 @@ public class Unlock{
             else if(temp.operation == TWIST){
                lock.twistIt();
             }
-         }
-         // Check if unlocked
-         if(lock.isUnlocked()){
-            return temp;
-         }
-         else{
-            // if not, reset the lock
-            lock.resetLock()
             
-            // Generate children
-            q.add(new Node(temp, cDepth+1, 1);
-            q.add(new Node(temp, cDepth+1, 2);
-            q.add(new Node(temp, cDepth+1, 3);
-            q.add(new Node(temp, cDepth+1, 4);
+            // Check if not unlocked
+            if(!lock.isUnlocked()){
+               // reset the lock
+               lock.resetLock();
+               
+               // Generate children
+               q.add(new Node(temp, cDepth+1, 1));
+               q.add(new Node(temp, cDepth+1, 2));
+               q.add(new Node(temp, cDepth+1, 3));
+               q.add(new Node(temp, cDepth+1, 4));
+            }
          }
       }
+      long end = System.nanoTime();
+      long diff = end - start;
+      System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
+      return temp;
    }
    
-   public Node DLDFS(Node curr, int depthLimit){
+   /*public Node DLDFS(Node curr, int depthLimit){
    
    }
    
    public Node IDS(Node curr){
    
-   }
-   
-   public void main(){
-   
-   }
+   }*/
    
    // Node Nested Class
    private class Node{
