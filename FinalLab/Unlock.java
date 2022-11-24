@@ -14,51 +14,57 @@ public class Unlock{
    public Unlock(){};
    
    public Node BFS(TheLock lock){
+      // Start Timer
       long start = System.nanoTime();
-      Node root = new Node(null, 0, UNLOCK);
-      Node temp = root;
-      Queue<Node> q = new LinkedList<Node>();
-      q.add(root);
-      int cDepth = 0;
+      int count = 0;
+      // Create the root node
+      Node leaf = new Node(null, 0, UNLOCK);
       
-      // Check if queue is empty
-      while(!q.isEmpty()){
-         temp = q.peek();
-         q.remove();
-         // Go up the tree to check if unlock
-         while(temp.operation != UNLOCK){
-            temp = temp.parent;
-            // Apply action to the lock here
-            if(temp.operation == SHAKE){
-               lock.shakeIt();
-            }
-            else if(temp.operation == PULL){
-               lock.pullIt();
-            }
-            else if(temp.operation == POKE){
-               lock.pokeIt();
-            }
-            else if(temp.operation == TWIST){
-               lock.twistIt();
-            }
-            
-            // Check if not unlocked
-            if(!lock.isUnlocked()){
-               // reset the lock
-               lock.resetLock();
-               
-               // Generate children
-               q.add(new Node(temp, cDepth+1, 1));
-               q.add(new Node(temp, cDepth+1, 2));
-               q.add(new Node(temp, cDepth+1, 3));
-               q.add(new Node(temp, cDepth+1, 4));
-            }
+      // Create a new queue
+      LinkedList<Node> queue = new LinkedList<Node>();
+      
+      // Enqueue root
+      queue.add(leaf);
+      
+      while (queue.size() != 0)
+      {
+         System.out.println("Greater than 0");
+         // Dequeue a vertex from queue and print it
+         leaf = queue.poll();
+
+         if(!lock.isUnlocked()){
+            count++;
+            queue.add(new Node(leaf, count, SHAKE));
+            queue.add(new Node(leaf, count, PULL));
+            queue.add(new Node(leaf, count, POKE));
+            queue.add(new Node(leaf, count, TWIST));
          }
+         
+         // Do operation
+         if(leaf.operation == SHAKE){
+            lock.shakeIt();
+         }
+         else if(leaf.operation == PULL){
+            lock.pullIt();
+         }
+         else if(leaf.operation == POKE){
+            lock.pokeIt();
+         }
+         else if(leaf.operation == TWIST){
+            lock.twistIt();
+         }
+         
       }
+      
+      // End Timer
       long end = System.nanoTime();
+      // Calculate Time
       long diff = end - start;
+      System.out.println("Time to find solution (nanoseconds): ");
       System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
-      return temp;
+      
+      // Return Path
+      return leaf;
    }
    
    /*public Node DLDFS(Node curr, int depthLimit){
