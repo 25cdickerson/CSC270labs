@@ -31,14 +31,6 @@ public class Unlock{
          System.out.println("Greater than 0");
          // Dequeue a vertex from queue and print it
          leaf = queue.poll();
-
-         if(!lock.isUnlocked()){
-            count++;
-            queue.add(new Node(leaf, count, SHAKE));
-            queue.add(new Node(leaf, count, PULL));
-            queue.add(new Node(leaf, count, POKE));
-            queue.add(new Node(leaf, count, TWIST));
-         }
          
          // Do operation
          if(leaf.operation == SHAKE){
@@ -54,6 +46,13 @@ public class Unlock{
             lock.twistIt();
          }
          
+         if(!lock.isUnlocked()){
+            count++;
+            queue.add(new Node(leaf, count, SHAKE));
+            queue.add(new Node(leaf, count, PULL));
+            queue.add(new Node(leaf, count, POKE));
+            queue.add(new Node(leaf, count, TWIST));
+         }
       }
       
       // End Timer
