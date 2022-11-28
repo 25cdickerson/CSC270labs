@@ -14,11 +14,46 @@ public class Unlock{
    
    public Unlock(){};
    
+   // Traverse Upward
+   public boolean traverse(Node node, TheLock lock){
+      while(node !=  null){
+            if(node.operation == SHAKE){
+               lock.shakeIt();
+               System.out.println("Shake");
+            }
+            else if(node.operation == PULL){
+                 lock.pullIt();
+                 System.out.println("Pull");
+
+            }
+            else if(node.operation == TWIST){
+                    lock.twistIt();
+                    System.out.println("Twist");
+            }
+            else if(node.operation == POKE){
+                   lock.pokeIt();
+                   System.out.println("Poke");
+            }
+                     
+            if(node.operation == UNLOCK){
+               System.out.println("Is it unlocked?");
+               if(lock.isUnlocked()){
+                  System.out.println("Yes");
+                  return true;
+               }
+            }
+            node = node.parent;
+      }
+      return false;
+   }
+   
+   
    // Breadth First Search to Unlock
    public Node BFS(TheLock lock){
       // Start Timer
       long start = System.nanoTime();
       int count = 0;
+      boolean isCorrect = false;
       
       // Create the root node
       Node leaf = new Node(null, 0, UNLOCK);
@@ -41,43 +76,29 @@ public class Unlock{
          // Enqueue root
          queue.add(leaf);
          
-         // Set step var
-         int step = 0;
-         
          while (queue.size() != 0)
          {
             System.out.println("Greater than 0");
             
+            if(isCorrect){
+               break;
+            }
+            
             // Do operation
             while(!queue.isEmpty()){
                   leaf = queue.poll();
-                  while(leaf.parent != null){
-                     System.out.println("getting parents");
-                     if(leaf.operation == SHAKE){
-                        lock.shakeIt();
-                     }
-                     else if(leaf.operation == PULL){
-                        lock.pullIt();
-                     }
-                     else if(leaf.operation == TWIST){
-                        lock.shakeIt();
-                     }
-                     else if(leaf.operation == POKE){
-                        lock.pokeIt();
-                     }
-                     
-                     if(leaf.operation == UNLOCK){
-                        lock.isUnlocked();
-                     }
-                     leaf = leaf.parent;
+                  
+                  if(traverse(leaf, lock)){
+                     isCorrect = true;
+                     break;
                   }
                   
                   lock.resetLock();
                   count++;
-                  queue.add(new Node(queue.peek(), count, SHAKE));
-                  queue.add(new Node(queue.peek(), count, PULL));
-                  queue.add(new Node(queue.peek(), count, POKE));
-                  queue.add(new Node(queue.peek(), count, TWIST));
+                  queue.add(new Node(leaf, count, SHAKE));
+                  queue.add(new Node(leaf, count, PULL));
+                  queue.add(new Node(leaf, count, POKE));
+                  queue.add(new Node(leaf, count, TWIST));
             }
          }
       }
@@ -112,42 +133,23 @@ public class Unlock{
       else{
          // Create a stack for DFS
          Stack<Node> stack = new Stack<Node>();
-         Node node = new Node(null, 0, UNLOCK);
-         stack.push(node);
-         Node U;
+         stack.push(leaf);
          
-         while(!stack.empty()){
-            // Pop U off the stack
-            node = stack.peek();
-            U = stack.pop();
-            
-            if(U.operation == UNLOCK){
-               lock.isUnlocked();
-            }
-            else if(U.operation == SHAKE){
-               lock.shakeIt();
-            }
-            else if(U.operation == PULL){
-               lock.pullIt();
-            }
-            else if(U.operation == POKE){
-               lock.pokeIt();
-            }
-            else if(U.operation == TWIST){
-               lock.twistIt();
+         while(!stack.isEmpty()){
+            leaf = stack.pop();
+            if(traverse(leaf, lock)){
+               break;
             }
             
-            if(lock.isUnlocked()){
-               return U;
-            }
             lock.resetLock();
-            
-            // Check if within range
-            if(U.depth < depthLimit){
-               stack.push(new Node(U, count, SHAKE));
-               stack.push(new Node(U, count, PULL));
-               stack.push(new Node(U, count, POKE));
-               stack.push(new Node(U, count, TWIST));
+               
+               // Check if within range
+               if(leaf.depth < depthLimit){
+                  stack.push(new Node(leaf, count, SHAKE));
+                  stack.push(new Node(leaf, count, PULL));
+                  stack.push(new Node(leaf, count, POKE));
+                  stack.push(new Node(leaf, count, TWIST));
+            }
          }
          
       }
@@ -157,9 +159,8 @@ public class Unlock{
       long diff = end - start;
       System.out.println("Time to find solution - DLDFS (nanoseconds): ");
       System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
-      return node;
+      return leaf;
    }
- }
    
    public Node IDS(TheLock lock){
       // Start Timer
