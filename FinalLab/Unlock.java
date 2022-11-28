@@ -177,10 +177,6 @@ public class Unlock{
                   stack.push(new Node(leaf, count, POKE));
                   stack.push(new Node(leaf, count, TWIST));
             }
-            else{
-               System.out.println("Solution Could Not Be Found in " + depthLimit + " Levels");
-               break;
-            }
          }
          
       }
@@ -212,7 +208,7 @@ public class Unlock{
          int loop = -1;
          while(true){
             loop++;
-            Node check = DLDFS(lock, count);
+            Node check = DLDFS(lock, loop);
             if(lock.isUnlocked()){
                // End Timer
                long end = System.nanoTime();
