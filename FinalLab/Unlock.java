@@ -14,31 +14,46 @@ public class Unlock{
    
    public Unlock(){};
    
+   // Print out Solution
+   public void printSolution(Node node){
+      System.out.println("The Solution is: ");
+      while(node != null){
+         if(node.operation == SHAKE){
+               System.out.println("SHAKE IT!");
+         }
+         else if(node.operation == PULL){
+               System.out.println("PULL IT!");
+
+         }
+         else if(node.operation == TWIST){
+               System.out.println("TWIST IT!");
+         }
+         else if(node.operation == POKE){
+               System.out.println("POKE IT!");
+         }
+         node = node.parent;
+      }
+   } 
+
    // Traverse Upward
    public boolean traverse(Node node, TheLock lock){
       while(node !=  null){
             if(node.operation == SHAKE){
                lock.shakeIt();
-               System.out.println("Shake");
             }
             else if(node.operation == PULL){
                  lock.pullIt();
-                 System.out.println("Pull");
 
             }
             else if(node.operation == TWIST){
                     lock.twistIt();
-                    System.out.println("Twist");
             }
             else if(node.operation == POKE){
                    lock.pokeIt();
-                   System.out.println("Poke");
             }
                      
             if(node.operation == UNLOCK){
-               System.out.println("Is it unlocked?");
                if(lock.isUnlocked()){
-                  System.out.println("Yes");
                   return true;
                }
             }
@@ -53,6 +68,8 @@ public class Unlock{
       // Start Timer
       long start = System.nanoTime();
       int count = 0;
+      
+      // Create Flag Variable for loop
       boolean isCorrect = false;
       
       // Create the root node
@@ -78,8 +95,6 @@ public class Unlock{
          
          while (queue.size() != 0)
          {
-            System.out.println("Greater than 0");
-            
             if(isCorrect){
                break;
             }
@@ -90,6 +105,7 @@ public class Unlock{
                   
                   if(traverse(leaf, lock)){
                      isCorrect = true;
+                     printSolution(leaf);
                      break;
                   }
                   
@@ -117,6 +133,9 @@ public class Unlock{
       long start = System.nanoTime();
       int count = 0;
       
+      // Create Flag Variable for loop
+      boolean isCorrect = false;
+      
       // Create the root node
       Node leaf = new Node(null, 0, UNLOCK);
       
@@ -137,18 +156,30 @@ public class Unlock{
          
          while(!stack.isEmpty()){
             leaf = stack.pop();
+            
+            if(isCorrect){
+               break;
+            }
+            
             if(traverse(leaf, lock)){
+               isCorrect = true;
+               printSolution(leaf);
                break;
             }
             
             lock.resetLock();
                
-               // Check if within range
-               if(leaf.depth < depthLimit){
+            // Check if within range
+            if(leaf.depth < depthLimit){
+                  count++;
                   stack.push(new Node(leaf, count, SHAKE));
                   stack.push(new Node(leaf, count, PULL));
                   stack.push(new Node(leaf, count, POKE));
                   stack.push(new Node(leaf, count, TWIST));
+            }
+            else{
+               System.out.println("Solution Could Not Be Found in " + depthLimit + " Levels");
+               break;
             }
          }
          
