@@ -76,9 +76,6 @@ public class Unlock{
       long start = System.nanoTime();
       int count = 0;
       
-      // Create Flag Variable for loop
-      boolean isCorrect = false;
-      
       // Create the root node
       Node leaf = new Node(null, 0, UNLOCK);
       
@@ -100,22 +97,19 @@ public class Unlock{
          // Enqueue root
          queue.add(leaf);
          
-         while (queue.size() != 0)
-         {
-            if(isCorrect){
-               break;
-            }
-            
+
             // Do operation
             while(!queue.isEmpty()){
+                  // Dequeue from the queue
                   leaf = queue.poll();
                   
+                  // Traverse the nodes back up to see if unlocks the lock
                   if(traverse(leaf, lock)){
-                     isCorrect = true;
                      printSolution(leaf);
                      break;
                   }
                   
+                  // if it doesn't, continue
                   lock.resetLock();
                   count++;
                   queue.add(new Node(leaf, count, SHAKE));
@@ -124,7 +118,6 @@ public class Unlock{
                   queue.add(new Node(leaf, count, TWIST));
             }
          }
-      }
          // End Timer
          long end = System.nanoTime();
          // Calculate Time
@@ -139,9 +132,6 @@ public class Unlock{
       // Start Timer
       long start = System.nanoTime();
       int count = 0;
-      
-      // Create Flag Variable for loop
-      boolean isCorrect = false;
       
       // Create the root node
       Node leaf = new Node(null, 0, UNLOCK);
@@ -163,29 +153,23 @@ public class Unlock{
          
          while(!stack.isEmpty()){
             leaf = stack.pop();
-            
-            if(isCorrect){
-               break;
-            }
-            
             if(traverse(leaf, lock)){
-               isCorrect = true;
                printSolution(leaf);
                break;
             }
-            
-            lock.resetLock();
                
+            lock.resetLock();
             // Check if within range
-            if(leaf.depth < depthLimit){
-                  count++;
-                  stack.push(new Node(leaf, count, SHAKE));
-                  stack.push(new Node(leaf, count, PULL));
-                  stack.push(new Node(leaf, count, POKE));
-                  stack.push(new Node(leaf, count, TWIST));
+            if(leaf.depth <= depthLimit){
+
+               
+               count++;
+               stack.push(new Node(leaf, count, SHAKE));
+               stack.push(new Node(leaf, count, PULL));
+               stack.push(new Node(leaf, count, POKE));
+               stack.push(new Node(leaf, count, TWIST));
             }
          }
-         
       }
       // End Timer
       long end = System.nanoTime();
