@@ -11,7 +11,15 @@ public class Unlock{
    public static final int POKE = 3;
    public static final int TWIST = 4;
    
+   // Variable to store the number of nodes visited
+   private int nodesVisited = 0;
    
+   // Storing information for IDS
+   private int nodesIDS = 0;
+   private Stack<Node> stackIDS = new Stack<Node>();
+   
+   
+   // Empty Unlock Constructor
    public Unlock(){};
    
    // Print out Solution
@@ -37,33 +45,31 @@ public class Unlock{
 
    // Traverse Upward
    public boolean traverse(Node node, TheLock lock){
+      // Traverse Upwards until reaching null
       while(node !=  null){
+            // Do the operation
             if(node.operation == SHAKE){
-               System.out.println("SHAKE");
                lock.shakeIt();
             }
             else if(node.operation == PULL){
-                 System.out.println("PULL");
                  lock.pullIt();
 
             }
             else if(node.operation == TWIST){
-                    System.out.println("TWIST");
                     lock.twistIt();
             }
             else if(node.operation == POKE){
-                   System.out.println("POKE");
                    lock.pokeIt();
             }
                      
             if(node.operation == UNLOCK){
-               System.out.println("Is Unlocked?");
                if(lock.isUnlocked()){
-                  System.out.println("Yes");
                   return true;
                }
-               System.out.println("No");
             }
+            // Increment nodesVisited to store the number of nodesVisited
+            nodesVisited++;
+            // Traverse Upwards
             node = node.parent;
       }
       return false;
@@ -76,23 +82,18 @@ public class Unlock{
       long start = System.nanoTime();
       int count = 0;
       
+      // Reset nodesVisited to 0
+      nodesVisited = 0;
+      
       // Create the root node
       Node leaf = new Node(null, 0, UNLOCK);
       
+      // Create a new queue
+      LinkedList<Node> queue = new LinkedList<Node>();
+      
       // Check if already unlocked
-      if(lock.isUnlocked()){
-         // End Timer
-         long end = System.nanoTime();
-         // Calculate Time
-         long diff = end - start;
-         System.out.println("Time to find solution - BFS (nanoseconds): ");
-         System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
-         return leaf;
-      }
-      else{
-         
-         // Create a new queue
-         LinkedList<Node> queue = new LinkedList<Node>();
+      if(!lock.isUnlocked()){
+         // If not already unlocked, attempt to unlock
          
          // Enqueue root
          queue.add(leaf);
@@ -124,6 +125,8 @@ public class Unlock{
          long diff = end - start;
          System.out.println("Time to find solution - BFS (nanoseconds): ");
          System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
+         System.out.println("Number of Nodes Visited: " + nodesVisited);
+         System.out.println("Length of the Queue: " + queue.size());
          // Return Path
          return leaf;
    }
@@ -131,52 +134,54 @@ public class Unlock{
    public Node DLDFS(TheLock lock, int depthLimit){
       // Start Timer
       long start = System.nanoTime();
-      int count = 0;
       
       // Create the root node
       Node leaf = new Node(null, 0, UNLOCK);
       
-      // Check if already unlocked
-      if(lock.isUnlocked()){
-         // End Timer
-         long end = System.nanoTime();
-         // Calculate Time
-         long diff = end - start;
-         System.out.println("Time to find solution - DLDFS (nanoseconds): ");
-         System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
-         return leaf;
-      }
-      else{
-         // Create a stack for DFS
-         Stack<Node> stack = new Stack<Node>();
-         stack.push(leaf);
-         
+      // Reset nodesVisited to 0 and store IDS values
+      nodesVisited = 0;
+      
+      // Create a stack for DFS
+      Stack<Node> stack = new Stack<Node>();
+      stackIDS = stack;
+      stack.push(leaf);
+      
+      if(!lock.isUnlocked()){
+         // If not already unlocked, try to unlock
+         // Do operation
          while(!stack.isEmpty()){
             leaf = stack.pop();
+            
+            // Check if we have reached an unlocked state
             if(traverse(leaf, lock)){
                printSolution(leaf);
                break;
             }
-               
+            
+            // If not, reset the lock   
             lock.resetLock();
+            
             // Check if within range
-            if(leaf.depth <= depthLimit){
-
-               
-               count++;
-               stack.push(new Node(leaf, count, SHAKE));
-               stack.push(new Node(leaf, count, PULL));
-               stack.push(new Node(leaf, count, POKE));
-               stack.push(new Node(leaf, count, TWIST));
+            if(leaf.depth < depthLimit){
+               stack.push(new Node(leaf, leaf.depth + 1, SHAKE));
+               stack.push(new Node(leaf, leaf.depth + 1, PULL));
+               stack.push(new Node(leaf, leaf.depth + 1, POKE));
+               stack.push(new Node(leaf, leaf.depth + 1, TWIST));
             }
          }
       }
+      
+      // Set the nodesIDS to nodesVisited
+      nodesIDS = nodesIDS + nodesVisited;
+      
       // End Timer
       long end = System.nanoTime();
       // Calculate Time
       long diff = end - start;
       System.out.println("Time to find solution - DLDFS (nanoseconds): ");
       System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
+      System.out.println("Number of Nodes Visited: " + nodesVisited);
+      System.out.println("Length of the Stack: " + stack.size());
       return leaf;
    }
    
@@ -184,6 +189,9 @@ public class Unlock{
       // Start Timer
       long start = System.nanoTime();
       int count = 0;
+      
+      // Reset nodesVisited to 0
+      nodesVisited = 0;
       
       // Check if already unlocked
       if(lock.isUnlocked()){
@@ -196,8 +204,15 @@ public class Unlock{
          return new Node(null, 0, UNLOCK);
       }
       else{
+         // If not, try to find unlock state
+         
+         // Create a loop variable to count the depth
          int loop = -1;
+         
+         // Node variable, leaf
          Node leaf;
+         
+         // Create an infinite loop until finding a correct answer
          while(true){
             loop++;
             leaf = DLDFS(lock, loop);
@@ -213,6 +228,8 @@ public class Unlock{
          printSolution(leaf);
          System.out.println("Time to find solution - IDS (nanoseconds): ");
          System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
+         System.out.println("Number of Nodes Visited: " + nodesIDS);
+         System.out.println("Length of Stack: " + stackIDS.size());
          return leaf;
       }
    }
