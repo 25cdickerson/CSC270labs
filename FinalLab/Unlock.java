@@ -39,23 +39,30 @@ public class Unlock{
    public boolean traverse(Node node, TheLock lock){
       while(node !=  null){
             if(node.operation == SHAKE){
+               System.out.println("SHAKE");
                lock.shakeIt();
             }
             else if(node.operation == PULL){
+                 System.out.println("PULL");
                  lock.pullIt();
 
             }
             else if(node.operation == TWIST){
+                    System.out.println("TWIST");
                     lock.twistIt();
             }
             else if(node.operation == POKE){
+                   System.out.println("POKE");
                    lock.pokeIt();
             }
                      
             if(node.operation == UNLOCK){
+               System.out.println("Is Unlocked?");
                if(lock.isUnlocked()){
+                  System.out.println("Yes");
                   return true;
                }
+               System.out.println("No");
             }
             node = node.parent;
       }
@@ -200,25 +207,29 @@ public class Unlock{
          long end = System.nanoTime();
          // Calculate Time
          long diff = end - start;
-         System.out.println("Time to find solution - DLDFS (nanoseconds): ");
+         System.out.println("Time to find solution - IDS (nanoseconds): ");
          System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
          return new Node(null, 0, UNLOCK);
       }
       else{
          int loop = -1;
+         Node leaf;
          while(true){
             loop++;
-            Node check = DLDFS(lock, loop);
+            leaf = DLDFS(lock, loop);
             if(lock.isUnlocked()){
-               // End Timer
-               long end = System.nanoTime();
-               // Calculate Time
-               long diff = end - start;
-               System.out.println("Time to find solution - DLDFS (nanoseconds): ");
-               System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
-               return check;
+               break;
             }
+            lock.resetLock();
          }
+         // End Timer
+         long end = System.nanoTime();
+         // Calculate Time
+         long diff = end - start;
+         printSolution(leaf);
+         System.out.println("Time to find solution - IDS (nanoseconds): ");
+         System.out.println(TimeUnit.NANOSECONDS.toMillis(diff));
+         return leaf;
       }
    }
    
