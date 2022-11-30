@@ -1,18 +1,10 @@
 public class Main{   
    public static void main(String[] args){
-      // RUNNING TESTS TO UNLOCK LOCK
+      // RUNNING TESTS TO UNLOCK LOCK - Used Many different combos, this was just my last test
    
       // Create the Lock and an Unlock Object
       Unlock u = new Unlock();
-      TheLock lock = new TheLock("Tests", 4);
-      
-      // Start Breadth First Search
-      System.out.println("Breadth First Search");
-      u.BFS(lock);
-      System.out.println("Is the lock unlocked? ");
-      System.out.println(lock.isUnlocked());
-      System.out.println("////////////////////");
-      lock.resetLock();
+      TheLock lock = new TheLock("Test");
       
       // Start Depth Limited Depth First Search
       System.out.println("");
@@ -21,7 +13,7 @@ public class Main{
       System.out.println("Is the lock unlocked? ");
       System.out.println(lock.isUnlocked());
       System.out.println("////////////////////");
-      lock.resetLock();
+      lock.resetLock();*/
       
       // Start Iterative Deepening
       System.out.println("");
@@ -30,5 +22,14 @@ public class Main{
       System.out.println("Is the lock unlocked? ");
       System.out.println(lock.isUnlocked());
       System.out.println("////////////////////");
+      lock.resetLock();
+      
+      // Start Breadth First Search
+      System.out.println("Breadth First Search");
+      u.BFS(lock);
+      System.out.println("Is the lock unlocked? ");
+      System.out.println(lock.isUnlocked());
+      System.out.println("////////////////////");
+      lock.resetLock();
    }
 }
